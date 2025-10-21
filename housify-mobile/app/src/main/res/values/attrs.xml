@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="logo_company"/>
+    <attr name="logo_project"/>
+    <attr name="button_bg1"/>
+    <attr name="button_bg2"/>
+</resources>

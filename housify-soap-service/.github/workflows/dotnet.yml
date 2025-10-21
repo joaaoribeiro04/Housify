@@ -1,0 +1,58 @@
+name: .NET Core CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: crypto
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '7.0'
+
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Install dependencies 1
+      run: dotnet restore /home/runner/work/housify-soap-service/housify-soap-service/database/database.csproj
+    - name: Install dependencies 2
+      run: dotnet restore /home/runner/work/housify-soap-service/housify-soap-service/utils/utils.csproj
+    - name: Install dependencies 3
+      run: dotnet restore /home/runner/work/housify-soap-service/housify-soap-service/service/service.csproj
+
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
+      env:
+        HOST: localhost
+        USERDB: postgres
+        BACKUP_PATH: /data/
+        DBNAME: crypto
+        ADMIN_DBNAME: postgres
+        PWD: postgres
+        PORT: 5432
+        SOAP_PROJECT_ROOT: /

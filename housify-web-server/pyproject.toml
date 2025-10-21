@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "housify_web_server"
+version = "0.1.0"
+description = ""
+authors = ["Diogo Bernardo <diogo.bernardo.dev@gmail.com>"]
+license = "AGPLv3"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.104.1"
+uvicorn = "^0.24.0.post1"
+tortoise-orm = {extras = ["asyncpg"], version = "^0.20.0"}
+python-dotenv = "^1.0.0"
+
+
+passlib = {extras = ["bcrypt"], version = "^1.7.4"}
+aiofiles = "^23.2.1"
+pydantic = {extras = ["email"], version = "^2.5.2"}
+
+
+
+[tool.poetry.dev-dependencies]
+
+[[tool.poetry.packages]]
+include = "api"
+from = "src"
+
+[[tool.poetry.packages]]
+include = "core"
+from = "src"
+
+[[tool.poetry.packages]]
+include = "data"
+from = "src"
+
+[[tool.poetry.packages]]
+include = "services"
+from = "src"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
